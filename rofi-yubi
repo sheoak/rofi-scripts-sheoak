@@ -1,0 +1,15 @@
+#!/bin/bash
+
+# Call menu
+SEL=$(ykman oath list 2>/dev/null | rofi -dmenu -p "Select Application" -a 0 -no-custom)
+SEL=$(echo $SEL | cut -d":" -f 1)
+
+if [ -z "$SEL" ]; then
+    exit
+fi
+
+# Call xrandr
+OUT=`ykman oath code "$SEL" 2>/dev/null | awk '{print $NF}' | tr -d "\n"`
+# | xclip -selection clipboard &> /dev/null
+# echo "Code for $SEL copied!"
+printf '%s' "$OUT" | xdotool type --delay 30 --clearmodifiers --file -
